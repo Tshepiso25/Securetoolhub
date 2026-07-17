@@ -6,7 +6,7 @@ function Seo({ title, description, path = "/" }) {
       ? title
       : `${title} | SecureToolHub`
 
-    const canonicalUrl = `https://securetoolhub.com${path}`
+    const canonicalUrl = `https://securetoolhub-67pt.vercel.app${path}`
 
     document.title = fullTitle
 
