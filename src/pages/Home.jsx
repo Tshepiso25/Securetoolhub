@@ -93,7 +93,62 @@ function Home() {
       category: "Utilities"
     }
   ]
-
+  const homeStructuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://securettoolhub.com/#website",
+        url: "https://securettoolhub.com",
+        name: "SecureToolHub",
+        description:
+          "Free, fast and secure browser-based tools for developers, students and creators.",
+        inLanguage: "en",
+        publisher: {
+          "@id": "https://securettoolhub.com/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://securettoolhub.com/#organization",
+        name: "SecureToolHub",
+        url: "https://securettoolhub.com",
+        description:
+          "SecureToolHub provides free browser-based tools for developers, students and creators.",
+        founder: {
+          "@type": "Organization",
+          name: "Nedopulse Consulting Group"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://securettoolhub.com/#webpage",
+        url: "https://securettoolhub.com",
+        name: "SecureToolHub – Free Online Developer Tools",
+        description:
+          "Use free, fast and secure online developer tools for passwords, JSON, Base64, URLs, UUIDs, hashes, QR codes, JWTs, regex and timestamps.",
+        isPartOf: {
+          "@id": "https://securettoolhub.com/#website"
+        },
+        about: {
+          "@id": "https://securettoolhub.com/#organization"
+        },
+        inLanguage: "en"
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://securettoolhub.com/#tools",
+        name: "SecureToolHub Developer Tools",
+        numberOfItems: tools.length,
+        itemListElement: tools.map((tool, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: tool.title,
+          url: `https://securettoolhub.com${tool.link}`
+        }))
+      }
+    ]
+  }
   const filteredTools = tools.filter((tool) => {
     const matchesSearch = tool.title
       .toLowerCase()
@@ -107,12 +162,13 @@ function Home() {
   })
 
   return (
-    <>
-      <Seo
-        title="SecureToolHub – Free Online Developer Tools"
-        description="Use free, fast and secure online developer tools for passwords, JSON, Base64, URLs, UUIDs, hashes, QR codes, JWTs, regex and timestamps."
-        path="/"
-      />
+   <>
+  <Seo
+    title="SecureToolHub – Free Online Developer Tools"
+    description="Use free, fast and secure online developer tools for passwords, JSON, Base64, URLs, UUIDs, hashes, QR codes, JWTs, regex and timestamps."
+    path="/"
+    structuredData={homeStructuredData}
+  />
 
       <Navbar />
 

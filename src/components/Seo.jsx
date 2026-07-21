@@ -5,18 +5,17 @@ const SITE_URL = "https://securettoolhub.com"
 
 function Seo({
   title = SITE_NAME,
-  description = "Free, secure, and easy-to-use online tools for developers, students, and everyday users.",
+  description = "Free, secure and easy-to-use online tools for developers, students and creators.",
   path = "/",
+  structuredData = null,
 }) {
   useEffect(() => {
     const fullTitle = title.includes(SITE_NAME)
       ? title
       : `${title} | ${SITE_NAME}`
 
-    // Ensures paths always begin with one forward slash.
     const normalizedPath = path.startsWith("/") ? path : `/${path}`
 
-    // Prevents the homepage from ending with unnecessary extra slashes.
     const canonicalUrl =
       normalizedPath === "/"
         ? SITE_URL
@@ -109,7 +108,36 @@ function Seo({
     }
 
     canonical.setAttribute("href", canonicalUrl)
-  }, [title, description, path])
+
+    const scriptId = "securetoolhub-structured-data"
+
+    let structuredDataScript = document.head.querySelector(
+      `script#${scriptId}`
+    )
+
+    if (structuredData) {
+      if (!structuredDataScript) {
+        structuredDataScript = document.createElement("script")
+        structuredDataScript.id = scriptId
+        structuredDataScript.type = "application/ld+json"
+        document.head.appendChild(structuredDataScript)
+      }
+
+      structuredDataScript.textContent = JSON.stringify(structuredData)
+    } else if (structuredDataScript) {
+      structuredDataScript.remove()
+    }
+
+    return () => {
+      const currentScript = document.head.querySelector(
+        `script#${scriptId}`
+      )
+
+      if (currentScript) {
+        currentScript.remove()
+      }
+    }
+  }, [title, description, path, structuredData])
 
   return null
 }
