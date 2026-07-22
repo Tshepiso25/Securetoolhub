@@ -4,57 +4,57 @@
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/</loc>
+    <loc>https://securettoolhub.com/</loc>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/password-generator</loc>
+    <loc>https://securettoolhub.com/password-generator</loc>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/json-formatter</loc>
+    <loc>https://securettoolhub.com/json-formatter</loc>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/base64-encoder</loc>
+    <loc>https://securettoolhub.com/base64-encoder</loc>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/url-encoder</loc>
+    <loc>https://securettoolhub.com/url-encoder</loc>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/uuid-generator</loc>
+    <loc>https://securettoolhub.com/uuid-generator</loc>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/hash-generator</loc>
+    <loc>https://securettoolhub.com/hash-generator</loc>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/qr-code-generator</loc>
+    <loc>https://securettoolhub.com/qr-code-generator</loc>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/jwt-decoder</loc>
+    <loc>https://securettoolhub.com/jwt-decoder</loc>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/regex-tester</loc>
+    <loc>https://securettoolhub.com/regex-tester</loc>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://securetoolhub-67pt.vercel.app/timestamp-converter</loc>
+    <loc>https://securettoolhub.com/timestamp-converter</loc>
     <priority>0.9</priority>
   </url>
 
