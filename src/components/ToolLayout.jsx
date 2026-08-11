@@ -2,17 +2,24 @@ import { Link, useLocation } from "react-router-dom"
 import { ShieldCheck } from "lucide-react"
 import Seo from "./Seo"
 
-function ToolLayout({ title, description, children }) {
+function ToolLayout({
+  title,
+  description,
+  children,
+  belowTool = null,
+  structuredData = null,
+}) {
   const location = useLocation()
 
   const seoDescription = `${description} Free, fast and secure with no sign-up required.`
 
   return (
-    <div className="tool-page">
+    <>
       <Seo
         title={`${title} – Free Online Tool`}
         description={seoDescription}
         path={location.pathname}
+        structuredData={structuredData}
       />
 
       <div className="tool-topbar">
@@ -39,7 +46,13 @@ function ToolLayout({ title, description, children }) {
       <div className="generator-card">
         {children}
       </div>
-    </div>
+
+      {belowTool && (
+        <section className="tool-content">
+          {belowTool}
+        </section>
+      )}
+    </>
   )
 }
 
