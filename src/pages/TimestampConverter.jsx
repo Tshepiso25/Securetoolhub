@@ -38,21 +38,26 @@ function TimestampConverter() {
         [
           `UTC: ${date.toISOString()}`,
           `Local: ${date.toString()}`,
-          `Milliseconds: ${milliseconds}`
+          `Milliseconds: ${milliseconds}`,
+          `Unix Seconds: ${Math.floor(milliseconds / 1000)}`
         ].join("\n")
       )
 
       setError("")
     } catch {
       setOutput("")
-      setError("Unable to convert the timestamp.")
+      setError(
+        "Unable to convert the timestamp. Please check that the value is within the supported date range."
+      )
     }
   }
 
   const useCurrentTimestamp = () => {
     const timestamp = Math.floor(Date.now() / 1000)
+
     setInput(String(timestamp))
     setError("")
+    setOutput("")
   }
 
   const clearFields = () => {
@@ -64,42 +69,67 @@ function TimestampConverter() {
   return (
     <ToolLayout
       title="Unix Timestamp Converter"
-      description="Convert Unix timestamps to readable dates instantly with this free online timestamp converter."
+      description="Convert Unix timestamps to readable UTC and local dates instantly with this free online timestamp converter."
     >
-      <input
-        className="tool-input"
-        type="text"
-        placeholder="Enter Unix timestamp, e.g. 1750000000"
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value)
-          setError("")
-        }}
-      />
+      <div className="tool-form-group">
+        <label className="tool-label" htmlFor="timestamp-input">
+          Unix Timestamp
+        </label>
 
-      <button className="generate-btn" onClick={convertTimestamp}>
-        Convert Timestamp
-      </button>
+        <input
+          id="timestamp-input"
+          className="tool-input"
+          type="text"
+          inputMode="numeric"
+          placeholder="Enter Unix timestamp, e.g. 1750000000"
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value)
+            setError("")
+          }}
+        />
+      </div>
 
-      <button className="copy-btn" onClick={useCurrentTimestamp}>
-        Use Current Timestamp
-      </button>
+      <div className="action-row">
+        <button
+          className="generate-btn"
+          onClick={convertTimestamp}
+        >
+          Convert Timestamp
+        </button>
+
+        <button
+          className="copy-btn"
+          onClick={useCurrentTimestamp}
+        >
+          Use Current Timestamp
+        </button>
+
+        <button
+          className="clear-btn"
+          onClick={clearFields}
+        >
+          Clear
+        </button>
+      </div>
 
       {error && <p className="tool-error">{error}</p>}
 
-      <textarea
-        className="tool-textarea"
-        placeholder="Converted date will appear here..."
-        value={output}
-        readOnly
-      />
+      <div className="tool-form-group">
+        <label className="tool-label" htmlFor="timestamp-output">
+          Converted Date
+        </label>
 
-      <button className="clear-btn" onClick={clearFields}>
-        Clear
-      </button>
+        <textarea
+          id="timestamp-output"
+          className="tool-textarea"
+          placeholder="Converted date will appear here..."
+          value={output}
+          readOnly
+        />
+      </div>
 
       <section className="tool-content">
-
         <div className="tool-info-card">
           <h2>What Is a Unix Timestamp?</h2>
 
@@ -118,6 +148,11 @@ function TimestampConverter() {
             <li>Click <strong>Convert Timestamp</strong>.</li>
             <li>Review the UTC and local date representations.</li>
           </ol>
+
+          <p>
+            You can also select <strong>Use Current Timestamp</strong> to
+            populate the current Unix timestamp.
+          </p>
         </div>
 
         <div className="tool-info-card">
@@ -144,27 +179,50 @@ function TimestampConverter() {
             <li>Authentication systems</li>
             <li>Web applications</li>
             <li>Event tracking</li>
+            <li>Scheduled tasks</li>
+            <li>Distributed systems</li>
           </ul>
+        </div>
+
+        <div className="tool-info-card">
+          <h2>Unix Timestamp Example</h2>
+
+          <p>
+            A Unix timestamp such as
+            <code> 1750000000 </code>
+            represents a specific point in time. The converter translates
+            that numeric value into human-readable UTC and local date formats.
+          </p>
         </div>
 
         <div className="tool-info-card">
           <h2>Frequently Asked Questions</h2>
 
           <h3>What is the Unix epoch?</h3>
+
           <p>
             The Unix epoch begins at January 1, 1970 at 00:00:00 UTC.
           </p>
 
           <h3>Are timestamps in seconds or milliseconds?</h3>
+
           <p>
             Unix timestamps are commonly expressed in seconds, while
             JavaScript timestamps are commonly represented in milliseconds.
           </p>
 
           <h3>Can I get the current Unix timestamp?</h3>
+
           <p>
-            Yes. Select Use Current Timestamp to populate the current Unix
-            timestamp.
+            Yes. Select <strong>Use Current Timestamp</strong> to populate
+            the current Unix timestamp.
+          </p>
+
+          <h3>Does the converter show UTC and local time?</h3>
+
+          <p>
+            Yes. The result includes both the UTC representation and the
+            local date representation generated by your browser.
           </p>
         </div>
 
@@ -173,20 +231,30 @@ function TimestampConverter() {
 
           <ul>
             <li>
-              <Link to="/json-formatter">JSON Formatter</Link>
+              <Link to="/json-formatter">
+                JSON Formatter
+              </Link>
             </li>
+
             <li>
-              <Link to="/jwt-decoder">JWT Decoder</Link>
+              <Link to="/jwt-decoder">
+                JWT Decoder
+              </Link>
             </li>
+
             <li>
-              <Link to="/uuid-generator">UUID Generator</Link>
+              <Link to="/uuid-generator">
+                UUID Generator
+              </Link>
             </li>
+
             <li>
-              <Link to="/regex-tester">Regex Tester</Link>
+              <Link to="/regex-tester">
+                Regex Tester
+              </Link>
             </li>
           </ul>
         </div>
-
       </section>
     </ToolLayout>
   )
