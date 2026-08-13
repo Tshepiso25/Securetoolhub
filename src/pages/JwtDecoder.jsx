@@ -3,7 +3,10 @@ import { Link } from "react-router-dom"
 import ToolLayout from "../components/ToolLayout"
 
 function decodeJwtPart(part) {
-  const normalized = part.replace(/-/g, "+").replace(/_/g, "/")
+  const normalized = part
+    .replace(/-/g, "+")
+    .replace(/_/g, "/")
+
   const padded = normalized.padEnd(
     normalized.length + (4 - (normalized.length % 4)) % 4,
     "="
@@ -16,7 +19,9 @@ function decodeJwtPart(part) {
     char => char.charCodeAt(0)
   )
 
-  return JSON.parse(new TextDecoder().decode(bytes))
+  return JSON.parse(
+    new TextDecoder().decode(bytes)
+  )
 }
 
 function JwtDecoder() {
@@ -40,16 +45,28 @@ function JwtDecoder() {
         throw new Error("Invalid JWT structure.")
       }
 
+      if (!parts[0] || !parts[1] || !parts[2]) {
+        throw new Error("Incomplete JWT.")
+      }
+
       const decodedHeader = decodeJwtPart(parts[0])
       const decodedPayload = decodeJwtPart(parts[1])
 
-      setHeader(JSON.stringify(decodedHeader, null, 2))
-      setPayload(JSON.stringify(decodedPayload, null, 2))
+      setHeader(
+        JSON.stringify(decodedHeader, null, 2)
+      )
+
+      setPayload(
+        JSON.stringify(decodedPayload, null, 2)
+      )
+
       setError("")
     } catch {
       setHeader("")
       setPayload("")
-      setError("Invalid JWT. Please check the token format.")
+      setError(
+        "Invalid JWT. Please check that the token contains a valid header, payload and signature."
+      )
     }
   }
 
@@ -63,54 +80,74 @@ function JwtDecoder() {
   return (
     <ToolLayout
       title="JWT Decoder"
-      description="Decode and inspect JSON Web Tokens instantly with this free browser-based JWT decoder."
+      description="Decode and inspect JSON Web Token headers and payloads instantly with this free browser-based JWT decoder."
     >
-      <textarea
-        className="tool-textarea"
-        placeholder="Paste your JWT here..."
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value)
-          setError("")
-        }}
-      />
+      <div className="tool-form-group">
+        <label className="tool-label" htmlFor="jwt-input">
+          JWT Token
+        </label>
 
-      <button className="generate-btn" onClick={decodeToken}>
-        Decode JWT
-      </button>
+        <textarea
+          id="jwt-input"
+          className="tool-textarea"
+          placeholder="Paste your JWT here..."
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value)
+            setError("")
+          }}
+        />
+      </div>
+
+      <div className="action-row">
+        <button
+          className="generate-btn"
+          onClick={decodeToken}
+        >
+          Decode JWT
+        </button>
+
+        <button
+          className="clear-btn"
+          onClick={clearFields}
+        >
+          Clear
+        </button>
+      </div>
 
       {error && <p className="tool-error">{error}</p>}
 
       {header && (
-        <>
-          <h3>JWT Header</h3>
+        <div className="tool-form-group">
+          <label className="tool-label" htmlFor="jwt-header">
+            JWT Header
+          </label>
 
           <textarea
+            id="jwt-header"
             className="tool-textarea"
             value={header}
             readOnly
           />
-        </>
+        </div>
       )}
 
       {payload && (
-        <>
-          <h3>JWT Payload</h3>
+        <div className="tool-form-group">
+          <label className="tool-label" htmlFor="jwt-payload">
+            JWT Payload
+          </label>
 
           <textarea
+            id="jwt-payload"
             className="tool-textarea"
             value={payload}
             readOnly
           />
-        </>
+        </div>
       )}
 
-      <button className="clear-btn" onClick={clearFields}>
-        Clear
-      </button>
-
       <section className="tool-content">
-
         <div className="tool-info-card">
           <h2>What Is a JWT?</h2>
 
@@ -134,6 +171,12 @@ function JwtDecoder() {
             <li>Payload</li>
             <li>Signature</li>
           </ol>
+
+          <p>
+            The header and payload contain JSON data encoded using Base64URL.
+            The signature is used by applications to verify token integrity
+            when the appropriate verification process and key are available.
+          </p>
         </div>
 
         <div className="tool-info-card">
@@ -141,12 +184,13 @@ function JwtDecoder() {
 
           <p>
             SecureToolHub's JWT Decoder reads the token's header and payload
-            so you can inspect their contents in a readable JSON format.
+            and displays their contents as readable JSON.
           </p>
 
           <p>
-            Decoding a JWT does not verify its signature or prove that the
-            token is authentic.
+            This tool is intended for inspection and debugging. Decoding a
+            JWT does not verify its signature or prove that the token is
+            authentic.
           </p>
         </div>
 
@@ -160,15 +204,27 @@ function JwtDecoder() {
           </p>
 
           <p>
-            Never paste sensitive production tokens into tools unless you
-            understand the security implications.
+            Avoid pasting sensitive production tokens into online tools unless
+            you understand the security implications.
           </p>
+        </div>
+
+        <div className="tool-info-card">
+          <h2>How to Decode a JWT</h2>
+
+          <ol>
+            <li>Copy the JWT you want to inspect.</li>
+            <li>Paste it into the input field.</li>
+            <li>Click <strong>Decode JWT</strong>.</li>
+            <li>Review the decoded header and payload.</li>
+          </ol>
         </div>
 
         <div className="tool-info-card">
           <h2>Frequently Asked Questions</h2>
 
           <h3>Does decoding a JWT verify it?</h3>
+
           <p>
             No. Decoding only exposes the readable header and payload.
             Signature verification requires additional information and
@@ -176,15 +232,25 @@ function JwtDecoder() {
           </p>
 
           <h3>Is a JWT encrypted?</h3>
+
           <p>
             A standard signed JWT is not automatically encrypted. Its header
             and payload can generally be decoded.
           </p>
 
           <h3>What is the JWT payload?</h3>
+
           <p>
             The payload contains claims and other information associated with
             the token.
+          </p>
+
+          <h3>Does this JWT decoder upload my token?</h3>
+
+          <p>
+            The decoding operation is performed in your browser. However,
+            you should still avoid entering sensitive production credentials
+            or tokens into any online tool unless you understand the risks.
           </p>
         </div>
 
@@ -193,20 +259,30 @@ function JwtDecoder() {
 
           <ul>
             <li>
-              <Link to="/base64-encoder">Base64 Encoder</Link>
+              <Link to="/base64-encoder">
+                Base64 Encoder
+              </Link>
             </li>
+
             <li>
-              <Link to="/json-formatter">JSON Formatter</Link>
+              <Link to="/json-formatter">
+                JSON Formatter
+              </Link>
             </li>
+
             <li>
-              <Link to="/hash-generator">Hash Generator</Link>
+              <Link to="/hash-generator">
+                Hash Generator
+              </Link>
             </li>
+
             <li>
-              <Link to="/url-encoder">URL Encoder</Link>
+              <Link to="/url-encoder">
+                URL Encoder
+              </Link>
             </li>
           </ul>
         </div>
-
       </section>
     </ToolLayout>
   )
