@@ -18,7 +18,8 @@ function QrCodeGenerator() {
     try {
       const qr = await QRCode.toDataURL(input.trim(), {
         width: 500,
-        margin: 2
+        margin: 2,
+        errorCorrectionLevel: "M"
       })
 
       setQrCode(qr)
@@ -40,19 +41,38 @@ function QrCodeGenerator() {
       title="QR Code Generator"
       description="Generate free QR codes from text or URLs instantly with this browser-based QR code generator."
     >
-      <textarea
-        className="tool-textarea"
-        placeholder="Enter text or URL..."
-        value={input}
-        onChange={(e) => {
-          setInput(e.target.value)
-          setError("")
-        }}
-      />
+      <div className="tool-form-group">
+        <label className="tool-label" htmlFor="qr-input">
+          Text or URL
+        </label>
 
-      <button className="generate-btn" onClick={generateQrCode}>
-        Generate QR Code
-      </button>
+        <textarea
+          id="qr-input"
+          className="tool-textarea"
+          placeholder="Enter text or URL..."
+          value={input}
+          onChange={(e) => {
+            setInput(e.target.value)
+            setError("")
+          }}
+        />
+      </div>
+
+      <div className="action-row">
+        <button
+          className="generate-btn"
+          onClick={generateQrCode}
+        >
+          Generate QR Code
+        </button>
+
+        <button
+          className="clear-btn"
+          onClick={clearFields}
+        >
+          Clear
+        </button>
+      </div>
 
       {error && <p className="tool-error">{error}</p>}
 
@@ -66,6 +86,7 @@ function QrCodeGenerator() {
           <a
             href={qrCode}
             download="securetoolhub-qr-code.png"
+            className="qr-download-link"
           >
             <button className="copy-btn">
               Download QR Code
@@ -74,19 +95,19 @@ function QrCodeGenerator() {
         </div>
       )}
 
-      <button className="clear-btn" onClick={clearFields}>
-        Clear
-      </button>
-
       <section className="tool-content">
-
         <div className="tool-info-card">
           <h2>What Is a QR Code?</h2>
 
           <p>
             A QR code is a two-dimensional barcode that can store information
-            such as URLs, text and other data. Smartphones and QR scanning
-            applications can read the encoded information.
+            such as URLs, text and other data.
+          </p>
+
+          <p>
+            Smartphones and QR scanning applications can read the encoded
+            information and use it for a variety of digital and physical
+            applications.
           </p>
         </div>
 
@@ -96,7 +117,8 @@ function QrCodeGenerator() {
           <ol>
             <li>Enter a URL or text.</li>
             <li>Click <strong>Generate QR Code</strong>.</li>
-            <li>Scan the generated QR code or download the image.</li>
+            <li>Scan the generated QR code.</li>
+            <li>Download the QR code image if needed.</li>
           </ol>
         </div>
 
@@ -110,7 +132,24 @@ function QrCodeGenerator() {
             <li>Product information</li>
             <li>Digital menus</li>
             <li>Marketing materials</li>
+            <li>Wi-Fi information</li>
+            <li>Digital resources</li>
           </ul>
+        </div>
+
+        <div className="tool-info-card">
+          <h2>QR Codes for Websites</h2>
+
+          <p>
+            QR codes are commonly used to make websites and online resources
+            easier to access from smartphones.
+          </p>
+
+          <p>
+            Enter the complete URL, including the protocol when appropriate,
+            and generate the QR code to create a scannable version of the
+            address.
+          </p>
         </div>
 
         <div className="tool-info-card">
@@ -122,6 +161,7 @@ function QrCodeGenerator() {
             <li>Generate QR codes instantly</li>
             <li>Download QR codes as PNG images</li>
             <li>Browser-based generation</li>
+            <li>Simple developer-friendly interface</li>
           </ul>
         </div>
 
@@ -129,17 +169,27 @@ function QrCodeGenerator() {
           <h2>Frequently Asked Questions</h2>
 
           <h3>Can I create a QR code for a website?</h3>
+
           <p>
             Yes. Enter the complete website URL and generate the QR code.
           </p>
 
-          <h3>Can I download the QR code?</h3>
+          <h3>Can I create a QR code from plain text?</h3>
+
           <p>
-            Yes. After generating the QR code, use the Download QR Code
+            Yes. The generator can encode text as well as URLs.
+          </p>
+
+          <h3>Can I download the QR code?</h3>
+
+          <p>
+            Yes. After generating the QR code, use the
+            <strong> Download QR Code </strong>
             button.
           </p>
 
           <h3>Does SecureToolHub store my QR code data?</h3>
+
           <p>
             The QR code is generated in the browser using the QR code library
             used by the application.
@@ -151,20 +201,30 @@ function QrCodeGenerator() {
 
           <ul>
             <li>
-              <Link to="/url-encoder">URL Encoder</Link>
+              <Link to="/url-encoder">
+                URL Encoder
+              </Link>
             </li>
+
             <li>
-              <Link to="/base64-encoder">Base64 Encoder</Link>
+              <Link to="/base64-encoder">
+                Base64 Encoder
+              </Link>
             </li>
+
             <li>
-              <Link to="/uuid-generator">UUID Generator</Link>
+              <Link to="/uuid-generator">
+                UUID Generator
+              </Link>
             </li>
+
             <li>
-              <Link to="/timestamp-converter">Timestamp Converter</Link>
+              <Link to="/timestamp-converter">
+                Timestamp Converter
+              </Link>
             </li>
           </ul>
         </div>
-
       </section>
     </ToolLayout>
   )
