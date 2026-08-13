@@ -9,7 +9,7 @@ function UrlEncoder() {
   const [copied, setCopied] = useState(false)
 
   const encodeUrl = () => {
-    if (!input) {
+    if (!input.trim()) {
       setError("Please enter text or a URL to encode.")
       setOutput("")
       return
@@ -26,7 +26,7 @@ function UrlEncoder() {
   }
 
   const decodeUrl = () => {
-    if (!input) {
+    if (!input.trim()) {
       setError("Please enter encoded URL data to decode.")
       setOutput("")
       return
@@ -38,7 +38,9 @@ function UrlEncoder() {
       setCopied(false)
     } catch {
       setOutput("")
-      setError("Invalid encoded URL data.")
+      setError(
+        "Invalid encoded URL data. Check that the percent-encoded characters are valid."
+      )
     }
   }
 
@@ -48,12 +50,13 @@ function UrlEncoder() {
     try {
       await navigator.clipboard.writeText(output)
       setCopied(true)
+      setError("")
 
       setTimeout(() => {
         setCopied(false)
       }, 1800)
     } catch {
-      setError("Unable to copy the result.")
+      setError("Unable to copy the result. Please copy it manually.")
     }
   }
 
@@ -67,7 +70,7 @@ function UrlEncoder() {
   return (
     <ToolLayout
       title="URL Encoder & Decoder"
-      description="Encode and decode URL components instantly with this free online URL encoding tool."
+      description="Encode and decode URL components instantly with this free online URL encoding and decoding tool."
     >
       {copied && <div className="toast">✅ Result copied</div>}
 
@@ -95,7 +98,7 @@ function UrlEncoder() {
 
       <textarea
         className="tool-textarea"
-        placeholder="Result will appear here..."
+        placeholder="Encoded or decoded result will appear here..."
         value={output}
         readOnly
       />
@@ -114,43 +117,108 @@ function UrlEncoder() {
           <h2>What Is URL Encoding?</h2>
 
           <p>
-            URL encoding converts characters into a format that can safely be
-            transmitted as part of a URL. Characters that have special meaning
-            in URLs may need to be percent-encoded.
+            URL encoding, also called percent-encoding, converts characters
+            into a format that can safely be transmitted within a URL.
+            Characters that have special meanings in URLs may need to be
+            represented using percent-encoded values.
+          </p>
+
+          <p>
+            This is particularly important when URLs contain spaces, special
+            characters, query parameters or other data that needs to be safely
+            represented inside a URL component.
           </p>
         </div>
 
         <div className="tool-info-card">
-          <h2>How to Encode a URL Component</h2>
+          <h2>How to Encode a URL</h2>
 
           <ol>
-            <li>Enter your text or URL component.</li>
+            <li>Enter text or a URL component in the input box.</li>
             <li>Click <strong>Encode URL</strong>.</li>
-            <li>Copy the encoded result.</li>
+            <li>Review the encoded result.</li>
+            <li>Click <strong>Copy Result</strong> if you want to copy it.</li>
           </ol>
+
+          <p>
+            The tool uses your browser's built-in URL encoding functionality
+            to convert characters into their percent-encoded representation.
+          </p>
         </div>
 
         <div className="tool-info-card">
           <h2>How to Decode URL Data</h2>
 
           <ol>
-            <li>Paste the encoded value.</li>
+            <li>Paste the encoded URL component into the input box.</li>
             <li>Click <strong>Decode URL</strong>.</li>
-            <li>Review the decoded result.</li>
+            <li>Review the decoded text.</li>
+            <li>Copy the result if needed.</li>
           </ol>
+
+          <p>
+            If the supplied data contains invalid percent-encoding, the tool
+            will display an error instead of returning an incorrect result.
+          </p>
         </div>
 
         <div className="tool-info-card">
           <h2>When Is URL Encoding Used?</h2>
 
           <p>
-            URL encoding is commonly used when passing query parameters,
-            search terms, identifiers and other values through web addresses.
+            URL encoding is commonly used when passing data through web
+            addresses, especially when working with query parameters,
+            search terms, identifiers and other URL components.
           </p>
 
           <p>
-            For example, spaces and certain reserved characters may be
-            represented using percent-encoded values.
+            For example, a space can be represented as
+            <strong> %20</strong> when it is percent-encoded.
+          </p>
+
+          <p>
+            URL encoding is also useful when an application needs to safely
+            include characters that could otherwise be interpreted as part of
+            a URL's syntax.
+          </p>
+        </div>
+
+        <div className="tool-info-card">
+          <h2>URL Encoding vs URL Decoding</h2>
+
+          <p>
+            <strong>URL encoding</strong> converts text into a URL-safe encoded
+            representation.
+          </p>
+
+          <p>
+            <strong>URL decoding</strong> performs the reverse operation,
+            converting percent-encoded characters back into their original
+            representation.
+          </p>
+
+          <p>
+            Together, these operations make it easier to safely prepare and
+            interpret data used within URL components.
+          </p>
+        </div>
+
+        <div className="tool-info-card">
+          <h2>Is URL Encoding Encryption?</h2>
+
+          <p>
+            No. URL encoding is not encryption.
+          </p>
+
+          <p>
+            Encoded data can generally be decoded back to its original form.
+            URL encoding is designed for safe representation of characters,
+            not for protecting confidential information.
+          </p>
+
+          <p>
+            Never rely on URL encoding to protect passwords, authentication
+            tokens or other sensitive information.
           </p>
         </div>
 
@@ -162,8 +230,10 @@ function UrlEncoder() {
             <li>No registration required</li>
             <li>Encode URL components instantly</li>
             <li>Decode percent-encoded values</li>
-            <li>Browser-based processing</li>
+            <li>Runs directly in your browser</li>
+            <li>No software installation required</li>
             <li>Copy results instantly</li>
+            <li>Simple developer-friendly interface</li>
           </ul>
         </div>
 
@@ -171,38 +241,84 @@ function UrlEncoder() {
           <h2>Frequently Asked Questions</h2>
 
           <h3>What does URL encoding do?</h3>
+
           <p>
-            URL encoding converts characters into representations that can be
-            safely used within URL components.
+            URL encoding converts characters into representations that can
+            safely be used within URL components.
           </p>
 
-          <h3>Is URL encoding encryption?</h3>
+          <h3>What is percent-encoding?</h3>
+
           <p>
-            No. URL encoding is not encryption and does not protect sensitive
-            information.
+            Percent-encoding represents certain characters using a percent
+            sign followed by hexadecimal characters. For example, a space can
+            be represented as %20.
+          </p>
+
+          <h3>Is URL encoding the same as encryption?</h3>
+
+          <p>
+            No. URL encoding is not a security mechanism and should not be
+            used to protect confidential information.
           </p>
 
           <h3>Can I decode a URL with this tool?</h3>
+
           <p>
-            Yes. Paste the encoded value and select Decode URL.
+            Yes. Paste URL-encoded data into the input box and select
+            <strong> Decode URL</strong>.
+          </p>
+
+          <h3>Why can't my URL be decoded?</h3>
+
+          <p>
+            The input may contain malformed percent-encoded characters.
+            Check that encoded sequences use the correct percent sign followed
+            by two hexadecimal characters.
           </p>
         </div>
 
         <div className="tool-info-card">
           <h2>Related Developer Tools</h2>
 
+          <p>
+            You may also find these SecureToolHub tools useful:
+          </p>
+
           <ul>
             <li>
-              <Link to="/base64-encoder">Base64 Encoder</Link>
+              <Link to="/base64-encoder">
+                Base64 Encoder
+              </Link>
+              {" "}— encode and decode Base64 data.
             </li>
+
             <li>
-              <Link to="/json-formatter">JSON Formatter</Link>
+              <Link to="/json-formatter">
+                JSON Formatter
+              </Link>
+              {" "}— format, validate and minify JSON.
             </li>
+
             <li>
-              <Link to="/jwt-decoder">JWT Decoder</Link>
+              <Link to="/jwt-decoder">
+                JWT Decoder
+              </Link>
+              {" "}— decode JSON Web Tokens in your browser.
             </li>
+
             <li>
-              <Link to="/regex-tester">Regex Tester</Link>
+              <Link to="/regex-tester">
+                Regex Tester
+              </Link>
+              {" "}— test regular expressions instantly.
+            </li>
+
+            <li>
+              <Link to="/hash-generator">
+                Hash Generator
+              </Link>
+              {" "}— generate hashes from text.
             </li>
           </ul>
         </div>
