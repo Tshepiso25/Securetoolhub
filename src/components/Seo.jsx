@@ -2,12 +2,15 @@ import { useEffect } from "react"
 
 const SITE_NAME = "SecureToolHub"
 const SITE_URL = "https://securettoolhub.com"
+const DEFAULT_DESCRIPTION =
+  "Free online developer tools for formatting, encoding, hashing, testing and converting data. Fast, browser-based and easy to use."
 
 function Seo({
   title = SITE_NAME,
-  description = "Free, secure and easy-to-use online tools for developers, students and creators.",
+  description = DEFAULT_DESCRIPTION,
   path = "/",
   structuredData = null,
+  image = `${SITE_URL}/og-image.png`,
 }) {
   useEffect(() => {
     const fullTitle = title.includes(SITE_NAME)
@@ -16,10 +19,15 @@ function Seo({
 
     const normalizedPath = path.startsWith("/") ? path : `/${path}`
 
-    const canonicalUrl =
+    const cleanPath =
       normalizedPath === "/"
+        ? "/"
+        : normalizedPath.replace(/\/+$/, "")
+
+    const canonicalUrl =
+      cleanPath === "/"
         ? SITE_URL
-        : `${SITE_URL}${normalizedPath.replace(/\/+$/, "")}`
+        : `${SITE_URL}${cleanPath}`
 
     document.title = fullTitle
 
@@ -47,6 +55,20 @@ function Seo({
         attributeValue: "description",
         content: description,
       },
+      {
+        selector: 'meta[name="robots"]',
+        attribute: "name",
+        attributeValue: "robots",
+        content: "index, follow",
+      },
+      {
+        selector: 'meta[name="googlebot"]',
+        attribute: "name",
+        attributeValue: "googlebot",
+        content: "index, follow",
+      },
+
+      // Open Graph
       {
         selector: 'meta[property="og:title"]',
         attribute: "property",
@@ -78,6 +100,20 @@ function Seo({
         content: SITE_NAME,
       },
       {
+        selector: 'meta[property="og:image"]',
+        attribute: "property",
+        attributeValue: "og:image",
+        content: image,
+      },
+      {
+        selector: 'meta[property="og:image:alt"]',
+        attribute: "property",
+        attributeValue: "og:image:alt",
+        content: `${SITE_NAME} - ${title}`,
+      },
+
+      // Twitter
+      {
         selector: 'meta[name="twitter:card"]',
         attribute: "name",
         attributeValue: "twitter:card",
@@ -95,11 +131,20 @@ function Seo({
         attributeValue: "twitter:description",
         content: description,
       },
+      {
+        selector: 'meta[name="twitter:image"]',
+        attribute: "name",
+        attributeValue: "twitter:image",
+        content: image,
+      },
     ]
 
     metaTags.forEach(updateMetaTag)
 
-    let canonical = document.head.querySelector('link[rel="canonical"]')
+    // Canonical URL
+    let canonical = document.head.querySelector(
+      'link[rel="canonical"]'
+    )
 
     if (!canonical) {
       canonical = document.createElement("link")
@@ -109,6 +154,7 @@ function Seo({
 
     canonical.setAttribute("href", canonicalUrl)
 
+    // Structured data
     const scriptId = "securetoolhub-structured-data"
 
     let structuredDataScript = document.head.querySelector(
@@ -123,7 +169,8 @@ function Seo({
         document.head.appendChild(structuredDataScript)
       }
 
-      structuredDataScript.textContent = JSON.stringify(structuredData)
+      structuredDataScript.textContent =
+        JSON.stringify(structuredData)
     } else if (structuredDataScript) {
       structuredDataScript.remove()
     }
@@ -137,7 +184,13 @@ function Seo({
         currentScript.remove()
       }
     }
-  }, [title, description, path, structuredData])
+  }, [
+    title,
+    description,
+    path,
+    structuredData,
+    image,
+  ])
 
   return null
 }
