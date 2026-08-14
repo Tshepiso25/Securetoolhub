@@ -1,7 +1,7 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import Navbar from '../components/Navbar'
-import Seo from '../components/Seo'
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import Navbar from "../components/Navbar"
+import Seo from "../components/Seo"
 
 import {
   Lock,
@@ -15,7 +15,7 @@ import {
   Regex,
   Clock3,
   ShieldCheck
-} from 'lucide-react'
+} from "lucide-react"
 
 function Home() {
   const [search, setSearch] = useState("")
@@ -93,13 +93,14 @@ function Home() {
       category: "Utilities"
     }
   ]
+
   const homeStructuredData = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "WebSite",
         "@id": "https://securettoolhub.com/#website",
-        url: "https://securettoolhub.com",
+        url: "https://securettoolhub.com/",
         name: "SecureToolHub",
         description:
           "Free, fast and secure browser-based tools for developers, students and creators.",
@@ -112,7 +113,7 @@ function Home() {
         "@type": "Organization",
         "@id": "https://securettoolhub.com/#organization",
         name: "SecureToolHub",
-        url: "https://securettoolhub.com",
+        url: "https://securettoolhub.com/",
         description:
           "SecureToolHub provides free browser-based tools for developers, students and creators.",
         founder: {
@@ -123,7 +124,7 @@ function Home() {
       {
         "@type": "WebPage",
         "@id": "https://securettoolhub.com/#webpage",
-        url: "https://securettoolhub.com",
+        url: "https://securettoolhub.com/",
         name: "SecureToolHub – Free Online Developer Tools",
         description:
           "Use free, fast and secure online developer tools for passwords, JSON, Base64, URLs, UUIDs, hashes, QR codes, JWTs, regex and timestamps.",
@@ -149,6 +150,7 @@ function Home() {
       }
     ]
   }
+
   const filteredTools = tools.filter((tool) => {
     const matchesSearch = tool.title
       .toLowerCase()
@@ -162,13 +164,13 @@ function Home() {
   })
 
   return (
-   <>
-  <Seo
-    title="SecureToolHub – Free Online Developer Tools"
-    description="Use free, fast and secure online developer tools for passwords, JSON, Base64, URLs, UUIDs, hashes, QR codes, JWTs, regex and timestamps."
-    path="/"
-    structuredData={homeStructuredData}
-  />
+    <>
+      <Seo
+        title="SecureToolHub – Free Online Developer Tools"
+        description="Use free, fast and secure online developer tools for passwords, JSON, Base64, URLs, UUIDs, hashes, QR codes, JWTs, regex and timestamps."
+        path="/"
+        structuredData={homeStructuredData}
+      />
 
       <Navbar />
 
